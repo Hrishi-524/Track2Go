@@ -1,0 +1,56 @@
+POST http://localhost:3000/api/auth/logout HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
+
+###
+POST http://localhost:3000/api/repo/ HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
+
+{
+    "name": "The Repo 1",
+    "description": "The common description"
+}
+
+###
+GET http://localhost:3000/api/repo/ HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
+
+###
+POST http://localhost:3000/api/repo/ HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
+
+###
+GET http://localhost:3000/api/repo/all HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
+
+###
+POST http://localhost:3000/api/auth/signup HTTP/1.1
+content-Type: application/json
+
+{
+    "username": ""
+}
+
+###
+POST http://localhost:3000/api/auth/login HTTP/1.1
+content-Type: application/json
+
+{
+    "email": "developer@gmail.com",
+    "password": "123456"
+}
+
+###
+POST http://localhost:3000/api/repo/ HTTP/1.1
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTY5MzY5MGEzM2M1YTEwOTY3YTI3YiIsInVzZXJuYW1lIjoiZGV2ZWxvcGVyIiwiZW1haWwiOiJkZXZlbG9wZXJAZ21haWwuY29tIiwiaWF0IjoxNzY3MjgyOTA3LCJleHAiOjE3NjczMDgxMDd9.opHj41loNyrYpH4Z-TayTqY6lamcKHn0AkXyJ1yoRPw
+
+{
+    "name": "repository3",
+    "description": "sample desccription 3",
+    "visibilty": "Public"
+}

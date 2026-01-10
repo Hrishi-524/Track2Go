@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "message": "User Logged in",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTY5MzY5MGEzM2M1YTEwOTY3YTI3YiIsInVzZXJuYW1lIjoiZGV2ZWxvcGVyIiwiZW1haWwiOiJkZXZlbG9wZXJAZ21haWwuY29tIiwiaWF0IjoxNzY3MjgyOTA3LCJleHAiOjE3NjczMDgxMDd9.opHj41loNyrYpH4Z-TayTqY6lamcKHn0AkXyJ1yoRPw",
+    "userId": "695693690a33c5a10967a27b"
+  }
+}

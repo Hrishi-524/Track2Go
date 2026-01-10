@@ -1,0 +1,15 @@
+{
+    "name": "track2go",
+    "version": "1.0.0",
+    "type": "module",
+    "bin": {
+        "track2go": "./bin/track2go.js"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.1693.0",
+        "commander": "^14.0.2",
+        "crypto": "^1.0.1",
+        "dotenv": "^17.2.3",
+        "uuid": "^13.0.0"
+    }
+}

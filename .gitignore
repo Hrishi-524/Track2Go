@@ -1,0 +1,9 @@
+aws-screenshots
+PLANNING.md
+.vscode
+test2go/
+nowarnings
+node_modules/
+cli/node_modules/
+.env
+.apnaGit/
