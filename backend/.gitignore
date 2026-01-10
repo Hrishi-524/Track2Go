@@ -1,0 +1,4 @@
+node_modules/
+.apnaGit
+commit.json
+.env
