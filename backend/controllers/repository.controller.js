@@ -1,5 +1,7 @@
 import Repository from '../models/repository.model.js'
 import User from '../models/user.model.js'
+import mongoose from 'mongoose'
+import syncRepository from '../services/sync.repository.js'
 
 export const fetchAllRepositories = async (req, res) => {
     const allRepos = await Repository.find({})
@@ -40,6 +42,8 @@ export const fetchRepositoryByName = async (req, res) => {
         })
     }
 
+    syncRepository(name)
+
     return res.status(200).json({
         success: true,
         message: 'Fetched repository successfuly',
@@ -72,8 +76,6 @@ export const fetchRepositoriesByCurrentUser = async (req, res) => {
         data: allRepos
     })
 }
-
-import mongoose from 'mongoose'
 
 export const createRepository = async (req, res) => {
     const { name, description, visibility } = req.body
@@ -108,7 +110,7 @@ export const createRepository = async (req, res) => {
 
         await session.commitTransaction()
         session.endSession()
-
+        
         return res.status(201).json({
             success: true,
             message: 'Repository created',
@@ -210,7 +212,6 @@ export const deleteRepository = async (req, res) => {
         throw err
     }
 }
-
 
 export const toggleVisibilityById = async (req, res) => {
     const { id } = req.params

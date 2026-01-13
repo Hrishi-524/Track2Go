@@ -176,60 +176,78 @@ export async function commitFiles(options) {
 }
 
 export async function push() {
-  const repoRoot = process.cwd()
-  const baseRootName = path.basename(repoRoot)
-  const commitsPath = path.join(repoRoot, '.apnaGit', 'commits')
-
-  try {
-    const commitIds = await fs.readdir(commitsPath)
-    for (const commitId of commitIds) {
-      const commitDir = path.join(commitsPath, commitId)
-
-      const files = await walkDir(commitDir, commitDir)
-
-      for (const file of files) {
-        const fileContent = await fs.readFile(file.fullPath)
+    const repoRoot = process.cwd()
+    const commitsPath = path.join(repoRoot, '.apnaGit', 'commits')
+    const remotePath = path.join(repoRoot, '.apnaGit', 'REMOTE')
+    try {
+        await fs.access(remotePath)
+        const remote = (await fs.readFile(remotePath, 'utf8')).trim()
+        const parsed = new URL(remote)
+        const segmets = parsed.pathname.split('/').filter(Boolean)
+        const userName = segmets[0]
+        const repoName = segmets[1]
 
         await s3.upload({
-          Bucket: S3_BUCKET,
-          Key: `${baseRootName}/commits/${commitId}/${file.relativePath}`,
-          Body: fileContent
+            Bucket: S3_BUCKET,
+            Key: `${userName}/${repoName}/REMOTE`,
+            Body: remote
         }).promise()
-      }
+
+        const commitIds = await fs.readdir(commitsPath)
+        for (const commitId of commitIds) {
+        const commitDir = path.join(commitsPath, commitId)
+
+        const files = await walkDir(commitDir, commitDir)
+
+        for (const file of files) {
+            const fileContent = await fs.readFile(file.fullPath)
+
+            await s3.upload({
+            Bucket: S3_BUCKET,
+            Key: `${userName}/${repoName}/commits/${commitId}/${file.relativePath}`,
+            Body: fileContent
+            }).promise()
+        }
+        }
+
+        const localHeadPath = path.join(repoRoot, '.apnaGit', 'HEAD')
+        const localHead = (await fs.readFile(localHeadPath, 'utf8')).trim()
+
+        await s3.upload({
+            Bucket: S3_BUCKET,
+            Key: `${userName}/${repoName}/HEAD`,
+            Body: localHead
+        }).promise()
+
+        console.log(`Pushed files to remote repository`)
+    } catch (error) {
+        console.error('Remote Push Failed - Error', error)
     }
-
-    const localHeadPath = path.join(repoRoot, '.apnaGit', 'HEAD')
-    const localHead = (await fs.readFile(localHeadPath, 'utf8')).trim()
-
-    await s3.upload({
-        Bucket: S3_BUCKET,
-        Key: `${baseRootName}/HEAD`,
-        Body: localHead
-    }).promise()
-
-    console.log(`Pushed files to remote repository`)
-  } catch (error) {
-    console.error('Remote Push Failed - Error', error)
-  }
 }
 
-function stripRemotePrefix(key, repoName) {
-  const prefix = `${repoName}/commits/`
+function stripRemotePrefix(key, userName, repoName) {
+  const prefix = `${userName}/${repoName}/commits/`
   return key.startsWith(prefix) ? key.slice(prefix.length) : null
 }
 
 export const pull = async () => {
   const repoRoot = process.cwd()
-  const repoName = path.basename(repoRoot)
   const gitDir = path.join(repoRoot, '.apnaGit')
   const commitsPath = path.join(gitDir, 'commits')
   const headPath = path.join(gitDir, 'HEAD')
-
+    const remotePath = path.join(repoRoot, '.apnaGit', 'REMOTE')
   try {
+        await fs.access(remotePath)
+        const remote = (await fs.readFile(remotePath, 'utf8')).trim()
+        const parsed = new URL(remote)
+        const segmets = parsed.pathname.split('/').filter(Boolean)
+        const userName = segmets[0]
+        const repoName = segmets[1]
+
     // 1️⃣ Read remote HEAD
     const remoteHeadObj = await s3.getObject({
       Bucket: S3_BUCKET,
-      Key: `${repoName}/HEAD`
+      Key: `${userName}/${repoName}/HEAD`
     }).promise()
 
     const remoteHead = remoteHeadObj.Body.toString().trim()
@@ -237,11 +255,11 @@ export const pull = async () => {
     // 2️⃣ List remote commit files
     const data = await s3.listObjectsV2({
       Bucket: S3_BUCKET,
-      Prefix: `${repoName}/commits/`
+      Prefix: `${userName}/${repoName}/commits/`
     }).promise()
 
     for (const object of data.Contents) {
-      const relativePath = stripRemotePrefix(object.Key, repoName)
+      const relativePath = stripRemotePrefix(object.Key, userName, repoName)
       if (!relativePath) continue
 
       const localPath = path.join(commitsPath, relativePath)
@@ -442,4 +460,18 @@ export async function revert(commitId) {
     await fs.mkdir(stagingPath)
 
     console.log(`Reverted to commit ${commitId}`)
+}
+
+export async function remoteAddOrigin(originUrl) {
+    const repoRoot = process.cwd()
+    const trackingPath = path.join(repoRoot, '.apnaGit')
+    const remotePath = path.join(trackingPath, 'REMOTE')
+
+    try {
+        await fs.writeFile(remotePath, originUrl)
+    
+        console.log(`Added remote origin ${originUrl}`)
+    } catch (error) {
+        console.log('Failed to add remote origin error', error)
+    }
 }
