@@ -38,7 +38,6 @@ export const fetchIssuesForRepository = async (req, res) => {
     })
 }
 
-
 export const fetchIssuesByTagName = async (req, res) => {
     const { repoId, tag } = req.params
 
@@ -52,7 +51,6 @@ export const fetchIssuesByTagName = async (req, res) => {
         data: issues
     })
 }
-
 
 export const fetchIssueById = async (req, res) => {
     const { repoId, issueId } = req.params
@@ -74,7 +72,6 @@ export const fetchIssueById = async (req, res) => {
         data: issue
     })
 }
-
 
 export const fetchIssueByTitle = (req, res) => {
 
@@ -120,7 +117,6 @@ export const patchIssue = async (req, res) => {
     })
 }
 
-
 export const deleteIssue = async (req, res) => {
     const { repoId, issueId } = req.params
 
@@ -141,5 +137,3 @@ export const deleteIssue = async (req, res) => {
         message: 'Issue deleted'
     })
 }
-
-
