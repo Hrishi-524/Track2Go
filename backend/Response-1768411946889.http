@@ -1,0 +1,11 @@
+HTTP/1.1 201 Created
+X-Powered-By: Express
+Vary: Origin
+Access-Control-Allow-Credentials: true
+Content-Type: application/json; charset=utf-8
+Content-Length: 235
+ETag: W/"eb-Q1uClFfnAxsqnd6qAxXLinf/YKo"
+Date: Wed, 14 Jan 2026 17:32:16 GMT
+Connection: close
+
+{"success":true,"message":"Repository created","data":{"owner":"6967d24583e9acdbaa086940","name":"test2go","description":"The common description","content":[],"visibility":"Public","issues":[],"_id":"6967d31f83e9acdbaa086942","__v":0}}

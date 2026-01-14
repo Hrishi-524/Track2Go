@@ -2,13 +2,13 @@ POST http://localhost:3000/api/auth/logout HTTP/1.1
 content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
 
-###
+### 
 POST http://localhost:3000/api/repo/ HTTP/1.1
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdkMjQ1ODNlOWFjZGJhYTA4Njk0MCIsInVzZXJuYW1lIjoiSHJpc2hpLTUyNCIsImVtYWlsIjoic3AzNTY3MjA4QGdtYWlsLmNvbSIsImlhdCI6MTc2ODQxMTcxNywiZXhwIjoxNzY4NDM2OTE3fQ.7OvGfYrVTRZ_5oUT0fcrzVqb6k_1jevOmRdR2TizGIc
 
 {
-    "name": "The Repo 1",
+    "name": "test2go",
     "description": "The common description"
 }
 
@@ -28,11 +28,23 @@ content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
 
 ###
+GET http://localhost:3000/api/repo/by-name/test2go
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdkMjQ1ODNlOWFjZGJhYTA4Njk0MCIsInVzZXJuYW1lIjoiSHJpc2hpLTUyNCIsImVtYWlsIjoic3AzNTY3MjA4QGdtYWlsLmNvbSIsImlhdCI6MTc2ODQxMTcxNywiZXhwIjoxNzY4NDM2OTE3fQ.7OvGfYrVTRZ_5oUT0fcrzVqb6k_1jevOmRdR2TizGIc
+
+{
+    "name": "test2go"
+}
+
+###
 POST http://localhost:3000/api/auth/signup HTTP/1.1
 content-Type: application/json
 
 {
-    "username": ""
+    "username": "Hrishi-524",
+    "email": "sp3567208@gmail.com",
+    "password": "Hrishi@524",
+    "confirmPassword": "Hrishi@524"
 }
 
 ###
@@ -47,7 +59,7 @@ content-Type: application/json
 ###
 POST http://localhost:3000/api/repo/ HTTP/1.1
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTY5MzY5MGEzM2M1YTEwOTY3YTI3YiIsInVzZXJuYW1lIjoiZGV2ZWxvcGVyIiwiZW1haWwiOiJkZXZlbG9wZXJAZ21haWwuY29tIiwiaWF0IjoxNzY3MjgyOTA3LCJleHAiOjE3NjczMDgxMDd9.opHj41loNyrYpH4Z-TayTqY6lamcKHn0AkXyJ1yoRPw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdkMjQ1ODNlOWFjZGJhYTA4Njk0MCIsInVzZXJuYW1lIjoiSHJpc2hpLTUyNCIsImVtYWlsIjoic3AzNTY3MjA4QGdtYWlsLmNvbSIsImlhdCI6MTc2ODQxMTcxNywiZXhwIjoxNzY4NDM2OTE3fQ.7OvGfYrVTRZ_5oUT0fcrzVqb6k_1jevOmRdR2TizGIc
 
 {
     "name": "repository3",

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander'
-import { initRepo, addFile, add, commitFiles, push, pull, status } from '../commands/command.controller.js'
+import { initRepo, addFile, add, commitFiles, push, pull, status, remoteAddOrigin } from '../commands/command.controller.js'
 
 program
 .name('track2go')
@@ -57,5 +57,10 @@ program
 .command('status')
 .description('Check status of working and staging against commits')
 .action(status)
+
+program
+.command('remote <originUrl>')
+.description('Add remote url')
+.action((originUrl) => remoteAddOrigin(originUrl))
 
 program.parse(process.argv);

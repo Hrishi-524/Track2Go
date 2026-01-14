@@ -34,15 +34,39 @@ export const fetchRepositoryById = async (req, res) => {
 export const fetchRepositoryByName = async (req, res) => {
     const { name } = req.body
 
-    const repo = await Repository.find({ name : name }).populate('owner')
+    let repo = await Repository.findOne({ name : name }).populate('owner')
     if(!repo) {
         return res.status(404).json({
             success: false,
             message: 'Repository cannot be found'
         })
     }
+    console.log('Repo So far:', repo)
+    const repoData = await syncRepository(repo.owner.username, repo.name)
 
-    syncRepository(name)
+    /**
+     *   EXAMPLE RESPONSE
+     *   repo: wanderlust
+     *   user: Hrishi-524
+     *   head: 25Bur...
+     *   files: [{
+     *      path: index.js
+     *      size: 225k
+     *      lastModified: js date
+     *   }, {
+     *      path: /services/sync.repository.js
+     *      size: 300k
+     *      lastModified: js date
+     *   }, 
+     *    ...
+     *   ]
+     */
+
+    const update = {
+        content: repoData.files
+    }
+
+    repo = await Repository.findByIdAndUpdate(repo._id, { $set: update }, { new: true, runValidators: true })
 
     return res.status(200).json({
         success: true,
