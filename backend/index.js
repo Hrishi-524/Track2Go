@@ -1,39 +1,4 @@
 import 'dotenv/config'  
-import yargs from 'yargs'
-import { hideBin } from 'yargs/helpers';
-import { initRepo, addFile, commitFiles, push, pull, revert } from './controllers/command.controller.js';
-const argv = yargs(hideBin(process.argv))
-
-argv
-.command('start',
-    'Start the server',
-    {},
-    startServer)
-.command('init', 
-    'Initialize new repository', 
-    {}, 
-    initRepo)
-.command('add <file>', 
-    'Add file to staging area', 
-    (yargs) => {yargs.positional('file', {describe:'Name of file to add to staginga area'})}, 
-    (argv) => addFile(argv.file))
-.command('commit <message>', 
-    'Commit files in staging area', 
-    (yargs) => {yargs.positional('message', {describe:'Describe commit name'})}, 
-    (argv) => commitFiles(argv.message))
-.command('push',
-    'Command to push files to remote or an upstream repository',
-    {},
-    push)
-.command('pull',
-    'Command to fetch files from remote or an upstream repository',
-    {},
-    pull)
-.command('revert <commitHash>',
-    'Revert repository to a particular commit',
-    (yargs) => {yargs.positional('commitHash', {describe: 'Any previous hash of a commit'})},
-    (argv) => revert(argv.commitHash))
-.demandCommand(1, 'You need atleast one command').help().argv
 
 import express from 'express'
 
@@ -46,6 +11,8 @@ import mainRouter from './routes/main.router.js'
 
 import { Server } from 'socket.io';
 import http from 'http'
+
+startServer()
 
 function startServer () {
     const app = express()

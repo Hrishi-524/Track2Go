@@ -1,5 +1,5 @@
 // services/sync.repository.js
-import { s3, S3_BUCKET } from '../config/aws-config.js'
+import { s3, S3_BUCKET } from '../config/aws.config.js'
 
 async function syncRepository(userName, repoName) {
     // Read remote HEAD
@@ -40,7 +40,8 @@ async function syncRepository(userName, repoName) {
     for(const object of data.Contents) {
         let key = object.Key
         if (!key.startsWith(prefix)) continue
-        const relativePath = key.slice(prefix.length)
+        const relativePath = key.slice(prefix.length).replace(/\\/g, '/')
+
 
         files.push({
             path: relativePath,
@@ -58,9 +59,25 @@ async function syncRepository(userName, repoName) {
     }
     
     return repoData
+    /**
+     *   repo: wanderlust
+     *   user: Hrishi-524
+     *   head: 25Bur...
+     *   files: [{
+     *      path: index.js
+     *      size: 225k
+     *      lastModified: js date
+     *   }, {
+     *      path: /services/sync.repository.js
+     *      size: 300k
+     *      lastModified: js date
+     *   }, 
+     *    ...
+     *   ]
+     */
 }
 
-export default syncRepository()
+export default syncRepository
 
 /**
  5️⃣ Pagination (you can ignore for now, but know it exists)

@@ -16,7 +16,9 @@ const repositorySchema = new Schema({
         type: String
     },
     content: [{
-        type: String
+        path: { type: String, required: true },
+        size: { type: Number, required: true },
+        lastModified: { type: Date, required: true }
     }],
     visibility: {
         type: String,
