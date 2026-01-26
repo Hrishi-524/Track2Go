@@ -14,6 +14,11 @@ const issueSchema = new Schema({
         enum: ['open', 'closed'],
         default: 'open'
     },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     repository: {
         type: Schema.Types.ObjectId,
         ref: 'Repository',
