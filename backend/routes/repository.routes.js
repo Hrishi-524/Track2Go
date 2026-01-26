@@ -17,31 +17,35 @@ import {
 
 import isLoggedIn from '../middleware/isLoggedIn.js'
 import wrapAsync from '../utils/wrapAsync.js'
+import issueRouter from '../routes/repository.issues.routes.js'
 
 /* ----------------------------
    COLLECTION ROUTES
 ----------------------------- */
 
+
 // Current user's repositories
 router.get(
-  '/',
-  isLoggedIn,
-  wrapAsync(fetchRepositoriesByCurrentUser)
+    '/',
+    isLoggedIn,
+    wrapAsync(fetchRepositoriesByCurrentUser)
 )
 
 // All repositories (admin / explore)
 router.get(
-  '/all',
-  isLoggedIn,
-  wrapAsync(fetchAllRepositories)
+    '/all',
+    isLoggedIn,
+    wrapAsync(fetchAllRepositories)
 )
 
 // Create repository
 router.post(
-  '/',
-  isLoggedIn,
-  wrapAsync(createRepository)
+    '/',
+    isLoggedIn,
+    wrapAsync(createRepository)
 )
+
+router.use('/:user/:repo/issues', issueRouter)
 
 // Commits (specific)
 router.get(

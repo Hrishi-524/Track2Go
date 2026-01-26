@@ -1,5 +1,6 @@
 import Issue from '../models/issue.model.js'
 import User from '../models/user.model.js'
+import Repository from '../models/repository.model.js'
 
 export const createIssue = async (req, res) => {
     const { user, repo } = req.params
@@ -31,7 +32,6 @@ export const createIssue = async (req, res) => {
 
 export const fetchIssuesForRepository = async (req, res) => {
     const { user, repo } = req.params
-
     const userDoc = await User.findOne({ username: user })
     if (!userDoc) return res.status(404).json({ message: "User not found" })
 
@@ -42,7 +42,6 @@ export const fetchIssuesForRepository = async (req, res) => {
     if (!repoDoc) return res.status(404).json({ message: "Repository not found" })
     
     const issues = await Issue.find({ repository: repoDoc._id })
-
     return res.status(200).json({
         success: true,
         data: issues
