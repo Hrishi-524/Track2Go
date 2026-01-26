@@ -201,11 +201,11 @@ export async function push() {
 
         for (const file of files) {
             const fileContent = await fs.readFile(file.fullPath)
-
+            const normalizedPath = file.relativePath.replace(/\\/g, "/")
             await s3.upload({
-            Bucket: S3_BUCKET,
-            Key: `${userName}/${repoName}/commits/${commitId}/${file.relativePath}`,
-            Body: fileContent
+                Bucket: S3_BUCKET,
+                Key: `${userName}/${repoName}/commits/${commitId}/${normalizedPath}`,
+                Body: fileContent
             }).promise()
         }
         }

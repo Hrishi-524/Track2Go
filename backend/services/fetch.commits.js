@@ -1,5 +1,5 @@
 // services/fetch.commits.js
-import { s3, S3_BUCKET } from '../config/aws-config.js'
+import { s3, S3_BUCKET } from '../config/aws.config.js'
 
 export async function fetchCommits(userName, repoName) {
     const remoteHeadObj = await s3.getObject({

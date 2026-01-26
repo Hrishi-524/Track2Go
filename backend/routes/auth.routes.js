@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router({ mergeParams: true })
 import wrapAsync from '../utils/wrapAsync.js'
-import { signUpUser, loginUser, logoutUser, passwordReset } from '../controllers/auth.controller.js'
+import { signUpUser, loginUser, logoutUser, passwordReset, getMe } from '../controllers/auth.controller.js'
 import isLoggedIn from '../middleware/isLoggedIn.js'
 
 router.route('/signup')
@@ -15,5 +15,8 @@ router.route('/logout')
 
 router.route('/resetpassword')
 .post(isLoggedIn, wrapAsync(passwordReset))
+
+router.route('/me')
+.get(isLoggedIn, wrapAsync(getMe))
 
 export default router

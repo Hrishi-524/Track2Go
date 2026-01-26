@@ -3,13 +3,13 @@ content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTExN2I0Y2Q4NTBmNmM0MmFkZTE3YSIsInVzZXJuYW1lIjoiSHJpc2hpIiwiZW1haWwiOiJzcDM1NjcyMDhAZ21haWwuY29tIiwiaWF0IjoxNzY2OTI3OTg1LCJleHAiOjE3NjY5NTMxODV9.GboJAxA7ZvS75RM1nqXAcYQjynKkuauA_mIcsWrcB7s
 
 ### 
-POST http://localhost:3000/api/repo/ HTTP/1.1
+POST http://localhost:8080/api/repo/ HTTP/1.1
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdkMjQ1ODNlOWFjZGJhYTA4Njk0MCIsInVzZXJuYW1lIjoiSHJpc2hpLTUyNCIsImVtYWlsIjoic3AzNTY3MjA4QGdtYWlsLmNvbSIsImlhdCI6MTc2ODQxMTcxNywiZXhwIjoxNzY4NDM2OTE3fQ.7OvGfYrVTRZ_5oUT0fcrzVqb6k_1jevOmRdR2TizGIc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NjdkMjQ1ODNlOWFjZGJhYTA4Njk0MCIsInVzZXJuYW1lIjoiSHJpc2hpLTUyNCIsImVtYWlsIjoic3AzNTY3MjA4QGdtYWlsLmNvbSIsImlhdCI6MTc2OTM1Mjc0MCwiZXhwIjoxNzY5Mzc3OTQwfQ.UzklAZm4KfGu-EF71MmpjYfaZ_r3wzXe8a5rY6JvfLs
 
 {
-    "name": "test2go",
-    "description": "The common description"
+    "name": "RizviGpt",
+    "description": "The RizviGpt description"
 }
 
 ###
@@ -48,12 +48,12 @@ content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/auth/login HTTP/1.1
+POST http://localhost:8080/api/auth/login HTTP/1.1
 content-Type: application/json
 
 {
-    "email": "developer@gmail.com",
-    "password": "123456"
+    "email": "sp3567208@gmail.com",
+    "password": "Hrishi@524"
 }
 
 ###

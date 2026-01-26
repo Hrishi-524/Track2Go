@@ -34,9 +34,18 @@ export const signUpUser = async (req, res) => {
     }, process.env.JWT_SECRET,{ 
         expiresIn: '7h' 
     });
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 7 * 60 * 60 * 1000 // 7 hours
+    });
+
     await newUser.save();
     console.log(`SIGNUP USER SUCCESS : { id: ${newUser._id}, username: ${newUser.username}, email: ${newUser.email} }`)
-    return res.status(200).json({ message: 'User signed up', data: {token, userId: newUser._id}, success: true });
+    return res.status(200).json({ success: true, message: "User signed up", data: { user: { id: newUser._id, username: newUser.username, email: newUser.email }}});
+
 }
 
 export const loginUser = async (req, res) => {
@@ -64,7 +73,14 @@ export const loginUser = async (req, res) => {
             expiresIn: '7h' 
         });
 
-        return res.status(200).json({success: true, message: 'User Logged in', data: {token, userId: user._id}});
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 7 * 60 * 60 * 1000 // 7 hours
+        });
+
+        return res.status(200).json({success: true, message: "User logged in", data: { user: { id: user._id, username: user.username, email: user.email }}});
     } else {
         console.log('Password is incorrect');
         return res.status(200).json({ success: false, message: 'Invalid email or password' });
@@ -73,26 +89,46 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
     try {
-        let token = req.header('Authorization');
-        if (!token) return res.status(400).json({ message: 'Token missing' });
+        let token = null;
 
-        token = token.replace('Bearer ', '');
+        // 1️⃣ Cookie-based (frontend)
+        if (req.cookies?.token) {
+            token = req.cookies.token;
+        }
+
+        // 2️⃣ Bearer-based (CLI support)
+        if (!token && req.headers.authorization?.startsWith("Bearer ")) {
+            token = req.headers.authorization.split(" ")[1];
+        }
+
+        if (!token) {
+            return res.status(400).json({ message: "Token missing" });
+        }
 
         const decoded = jwt.decode(token);
         if (!decoded?.exp) {
-            return res.status(400).json({ message: 'Invalid token format' });
+            return res.status(400).json({ message: "Invalid token format" });
         }
 
         const ttl = decoded.exp - Math.floor(Date.now() / 1000);
 
-        await redisClient.set(token, 'blacklisted', { ex: ttl });
+        if (ttl > 0) {
+            await redisClient.set(token, "blacklisted", { ex: ttl });
+        }
 
-        return res.status(200).json({ message: 'Logged out' });
+        // 🔑 Clear cookie
+        res.clearCookie("token");
+
+        return res.status(200).json({
+            success: true,
+            message: "Logged out"
+        });
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: 'Logout failed' });
+        return res.status(500).json({ message: "Logout failed" });
     }
-}
+};
+
 
 export const passwordReset = async (req, res) => {
     const parsed = passwordResetSchema.safeParse(req.body);
@@ -114,4 +150,11 @@ export const passwordReset = async (req, res) => {
     await user.save();
 
     return res.status(200).json({ message: "Password reset successful." });
+};
+
+export const getMe = async (req, res) => {
+    return res.status(200).json({
+        success: true,
+        user: req.user
+    });
 };
