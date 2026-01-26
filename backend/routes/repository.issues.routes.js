@@ -11,25 +11,25 @@ import {
 } from "../controllers/issue.controller.js"
 
 router.post(
-    "/:user/:repo/issues",
+    "/",
     isLoggedIn,
     wrapAsync(createIssue)
 )
 
 router.get(
-    "/:user/:repo/issues",
+    "/",
     isLoggedIn,
     wrapAsync(fetchIssuesForRepository)
 )
 
 router.patch(
-    "/:user/:repo/issues/:issueId",
+    "/:issueId",
     isLoggedIn,
     wrapAsync(patchIssue)
 )
 
 router.delete(
-  "/:user/:repo/issues/:issueId",
+  "/:issueId",
   isLoggedIn,
   wrapAsync(deleteIssue)
 )

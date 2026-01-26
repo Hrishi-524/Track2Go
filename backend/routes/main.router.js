@@ -10,6 +10,5 @@ import issueRouter from './issue.routes.js'
 router.use('/auth', authRouter)
 router.use('/user', userRouter)
 router.use('/repo', repositoryRouter)
-router.use('/repositories', issueRouter)
 
 export default router
