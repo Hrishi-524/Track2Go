@@ -9,17 +9,11 @@ const repositorySchema = new Schema({
     },
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     }, 
     description: {
         type: String
     },
-    content: [{
-        path: { type: String, required: true },
-        size: { type: Number, required: true },
-        lastModified: { type: Date, required: true }
-    }],
     visibility: {
         type: String,
         enum: ['Public', 'Private'],
@@ -30,6 +24,8 @@ const repositorySchema = new Schema({
         ref: 'Issue'
     }]
 })
+
+repositorySchema.index({ owner: 1, name: 1 }, { unique: true })
 
 const Repository = mongoose.model('Repository', repositorySchema)
 export default Repository

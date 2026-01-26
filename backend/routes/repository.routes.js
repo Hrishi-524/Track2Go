@@ -10,7 +10,9 @@ import {
   createRepository,
   updateRepository,
   deleteRepository,
-  toggleVisibilityById
+  toggleVisibilityById,
+  getFileContent,
+  getCommitHistory
 } from '../controllers/repository.controller.js'
 
 import isLoggedIn from '../middleware/isLoggedIn.js'
@@ -41,10 +43,21 @@ router.post(
   wrapAsync(createRepository)
 )
 
-// Fetch by name (explicit, non-ambiguous)
+// Commits (specific)
 router.get(
-  '/by-name/:name',
-  isLoggedIn,
+  '/:user/:repo/commits',
+  wrapAsync(getCommitHistory)
+)
+
+// File blob (very specific)
+router.get(
+  '/:user/:repo/blob/:commit/*splat',
+  wrapAsync(getFileContent)
+)
+
+// Repo root (least specific — LAST)
+router.get(
+  '/:user/:repo',
   wrapAsync(fetchRepositoryByName)
 )
 
@@ -53,26 +66,26 @@ router.get(
 ----------------------------- */
 
 // Validate ObjectId BEFORE controller
-router.param('id', (req, res, next, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({
-      success: false,
-      message: 'Invalid repository id'
-    })
-  }
-  next()
-})
+// router.param('id', (req, res, next, id) => {
+//   if (!mongoose.Types.ObjectId.isValid(id)) {
+//     return res.status(400).json({
+//       success: false,
+//       message: 'Invalid repository id'
+//     })
+//   }
+//   next()
+// })
 
-router.route('/:id')
-  .get(isLoggedIn, wrapAsync(fetchRepositoryById))
-  .patch(isLoggedIn, wrapAsync(updateRepository))
-  .delete(isLoggedIn, wrapAsync(deleteRepository))
+// router.route('/:id')
+//   .get(isLoggedIn, wrapAsync(fetchRepositoryById))
+//   .patch(isLoggedIn, wrapAsync(updateRepository))
+//   .delete(isLoggedIn, wrapAsync(deleteRepository))
 
-// Action on entity
-router.patch(
-  '/:id/visibility',
-  isLoggedIn,
-  wrapAsync(toggleVisibilityById)
-)
+// // Action on entity
+// router.patch(
+//   '/:id/visibility',
+//   isLoggedIn,
+//   wrapAsync(toggleVisibilityById)
+// )
 
 export default router

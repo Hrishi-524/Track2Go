@@ -11,6 +11,7 @@ import mainRouter from './routes/main.router.js'
 
 import { Server } from 'socket.io';
 import http from 'http'
+import cookieParser from "cookie-parser";
 
 startServer()
 
@@ -26,6 +27,7 @@ function startServer () {
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
     app.use(cors({ origin: true | '*', credentials: true }))
+    app.use(cookieParser());
 
     main()
      .then(() => {

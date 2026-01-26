@@ -2,6 +2,9 @@ import Repository from '../models/repository.model.js'
 import User from '../models/user.model.js'
 import mongoose from 'mongoose'
 import syncRepository from '../services/sync.repository.js'
+import { fetchCommits } from '../services/fetch.commits.js'
+import { request } from 'http'
+import {fetchFile} from '../services/fetch.file.js'
 
 export const fetchAllRepositories = async (req, res) => {
     const allRepos = await Repository.find({})
@@ -32,52 +35,64 @@ export const fetchRepositoryById = async (req, res) => {
 }
 
 export const fetchRepositoryByName = async (req, res) => {
-    const { name } = req.body
+  const { user: username, repo: repoName } = req.params;
 
-    let repo = await Repository.findOne({ name : name }).populate('owner')
-    if(!repo) {
-        return res.status(404).json({
-            success: false,
-            message: 'Repository cannot be found'
-        })
-    }
-    console.log('Repo So far:', repo)
-    const repoData = await syncRepository(repo.owner.username, repo.name)
+  const userDoc = await User.findOne({ username });
+  if (!userDoc) throw new Error("User not found");
 
-    /**
-     *   EXAMPLE RESPONSE
-     *   repo: wanderlust
-     *   user: Hrishi-524
-     *   head: 25Bur...
-     *   files: [{
-     *      path: index.js
-     *      size: 225k
-     *      lastModified: js date
-     *   }, {
-     *      path: /services/sync.repository.js
-     *      size: 300k
-     *      lastModified: js date
-     *   }, 
-     *    ...
-     *   ]
-     */
+  const repoDoc = await Repository.findOne({
+    owner: userDoc._id,
+    name: repoName
+  });
 
-    const update = {
-        content: repoData.files
-    }
+  if (!repoDoc) {
+    return res.status(404).json({
+      success: false,
+      message: "Repository cannot be found"
+    });
+  }
 
-    repo = await Repository.findByIdAndUpdate(repo._id, { $set: update }, { new: true, runValidators: true })
+  const repoData = await syncRepository(userDoc.username, repoDoc.name);
 
-    return res.status(200).json({
+  return res.status(200).json({
+    success: true,
+    empty: repoData.empty,
+    repo: repoDoc.name,
+    user: userDoc.username,
+    description: repoDoc.description,
+    head: repoData.head,
+    files: repoData.files
+  });
+};
+
+export const getCommitHistory = async (req, res) => {
+    const { user, repo } = req.params
+
+    const commits = await fetchCommits(user, repo)
+
+    res.json({
         success: true,
-        message: 'Fetched repository successfuly',
-        data: repo
+        data: commits
     })
+}
+
+export const getFileContent = async (req, res) => {
+    const { user, repo, commit } = req.params
+    let filePath = req.params.splat
+    filePath = filePath.join('/')
+    console.log(`THINGS IN CONTREOLLER : ${user}/${repo}/commits/${commit}/${filePath}`)
+
+    const file = await fetchFile(user, repo, commit, filePath)
+
+    res.setHeader("Content-Type", file.contentType)
+    res.setHeader("Cache-Control", "public, max-age=300") 
+    res.send(file.content)
 }
 
 export const fetchRepositoriesByCurrentUser = async (req, res) => {
     const { id } = req.user
     const user = await User.findById(id).populate('repositories')
+    console.log(`DEBUG/repo.contoller.js user \n ${user}`)
 
     if(!user) {
         return res.status(404).json({
@@ -86,7 +101,7 @@ export const fetchRepositoriesByCurrentUser = async (req, res) => {
         })
     }
     const allRepos = user.repositories
-
+    console.log(`DEBUG/repo.contoller.js  allRepos :\n ${allRepos}`)
     if(!allRepos) {
         return res.status(500).json({
             success: false,
