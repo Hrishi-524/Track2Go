@@ -4,7 +4,11 @@ import useSWR from "swr";
 import { getMyRepos, createRepo } from "@/lib/repo.api";
 import { getMe } from "@/lib/auth.api";
 import { Badge } from "@/components/ui/badge";
+<<<<<<< HEAD
 import { Skeleton } from "@/components/ui/skeleton";
+=======
+import { Skeleton } from "@/components/ui/skeliton";
+>>>>>>> 4c2525e7c98827da1d2a5b4e9a1fe50d0e545734
 import { GitBranch, Plus } from "lucide-react";
 
 export default function DashboardPage() {

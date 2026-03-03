@@ -55,7 +55,11 @@ function DemoLoginCard() {
   const handleDemoLogin = async () => {
     setLoading(true);
     try {
+<<<<<<< HEAD
       await login('demo@gmail.com', 'demo@123');
+=======
+      await login('sp3567208@gmail.com', 'Hrishi@524');
+>>>>>>> 4c2525e7c98827da1d2a5b4e9a1fe50d0e545734
       router.push('/dashboard');
     } catch (error: any) {
       addToast('Demo login failed, try again', 'error');
