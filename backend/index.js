@@ -20,6 +20,7 @@ function startServer () {
     const PORT = process.env.PORT
     
     async function main() {
+        console.log(`CONNECTING TO MONGOOSE URI: ${process.env.MONGOOSE_URI}`)
         await mongoose.connect(process.env.MONGOOSE_URI)
     }
 
