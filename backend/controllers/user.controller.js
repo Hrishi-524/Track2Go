@@ -14,14 +14,15 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     const id = req.params.id
 
-    const user = await User.findById(id).populate('repositories followedUsers staredRepositories')
+    const user = await User.findById(id).populate('repositories followedUsers staredRepositories pinnedRepositories')
 
     const userData = {
         username: user.username,
         email: user.email,
         repositories: user.repositories,
         followedUsers : user.followedUsers,
-        staredRepositories : user.staredRepositories
+        staredRepositories : user.staredRepositories,
+        pinnedRepositories : user.pinnedRepositories
     }
 
     if(!user) {
@@ -40,9 +41,9 @@ export const getUserById = async (req, res) => {
 
 export const updateUserDetails = async (req, res) => {
     const { id } = req.params
-    const { username, email } = req.body
+    const { username, email, bio, avatarUrl } = req.body
 
-    if (!username && !email) {
+    if (!username && !email && !bio && !avatarUrl) {
         return res.status(400).json({
             success: false,
             message: 'Provide at least one field to update'
@@ -53,6 +54,8 @@ export const updateUserDetails = async (req, res) => {
         const update = {}
         if (username) update.username = username
         if (email) update.email = email
+        if (bio) update.bio = bio
+        if (avatarUrl) update.avatarUrl = avatarUrl
 
         const user = await User.findByIdAndUpdate(
             id,

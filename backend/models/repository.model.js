@@ -16,13 +16,16 @@ const repositorySchema = new Schema({
     },
     visibility: {
         type: String,
-        enum: ['Public', 'Private'],
+        enum: ['Public', 'Private', 'public', 'private'],
         default: 'Public'
     },
     issues: [{
         type: Schema.Types.ObjectId,
         ref: 'Issue'
-    }]
+    }],
+    updatedAt: {   
+        type: Date,
+    }
 })
 
 repositorySchema.index({ owner: 1, name: 1 }, { unique: true })

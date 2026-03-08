@@ -12,13 +12,13 @@ import {
   deleteRepository,
   toggleVisibilityById,
   getFileContent,
-  getCommitHistory
+  getCommitHistory,
+  checkAvailability
 } from '../controllers/repository.controller.js'
 
 import isLoggedIn from '../middleware/isLoggedIn.js'
 import wrapAsync from '../utils/wrapAsync.js'
 import issueRouter from '../routes/repository.issues.routes.js'
-
 /* ----------------------------
    COLLECTION ROUTES
 ----------------------------- */
@@ -44,6 +44,14 @@ router.post(
     isLoggedIn,
     wrapAsync(createRepository)
 )
+
+router.put('/:user/:repo', isLoggedIn, wrapAsync(updateRepository))
+
+router.delete('/:user/:repo', isLoggedIn, wrapAsync(deleteRepository))
+
+router.patch('/:user/:repo/visibility', isLoggedIn, wrapAsync(toggleVisibilityById))
+
+router.get('/:user/:repo/available' , wrapAsync(checkAvailability))
 
 router.use('/:user/:repo/issues', issueRouter)
 

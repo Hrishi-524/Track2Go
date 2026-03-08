@@ -28,7 +28,27 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Repository",
         default: []
-    }]
+    }],
+    pinnedRepositories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Repository"
+    }],
+    avatarUrl: {
+        type: String,
+    },
+    bio: {
+        type: String,
+    },
+    otp: { 
+        type: String 
+    },
+    otp_expiration: { 
+        type: Date 
+    },
+    is_active: { 
+        type: Boolean, 
+        default: false 
+    }
 })
 
 const User = mongoose.model('User', userSchema)

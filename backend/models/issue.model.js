@@ -34,7 +34,13 @@ const issueSchema = new Schema({
     }],
     milestone: [{//future implementataion not intended right now
         type: String
-    }]
+    }],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    timestamps: true
 })
 
 const Issue = mongoose.model('Issue', issueSchema)

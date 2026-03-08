@@ -36,7 +36,7 @@ export const fetchRepositoryById = async (req, res) => {
 
 export const fetchRepositoryByName = async (req, res) => {
   const { user: username, repo: repoName } = req.params;
-
+    console.log(`DEBUG/repo.controller.js fetchRepositoryByName called with username: ${username}, repoName: ${repoName}`)
   const userDoc = await User.findOne({ username });
   if (!userDoc) throw new Error("User not found");
 
@@ -65,10 +65,50 @@ export const fetchRepositoryByName = async (req, res) => {
   });
 };
 
+export const checkAvailability = async (req, res) => {
+    const { user: username, repo: repoName } = req.params;
+    console.log(`DEBUG/repo.controller.js checkAvailability called with username: ${username}, repoName: ${repoName}`)
+    
+    const userDoc = await User.findOne({
+        username
+    })
+
+    if (!userDoc) {
+        console.log(`DEBUG/repo.controller.js checkAvailability - user ${username} does not exist, repo name ${repoName} is available`)
+        return res.status(404).json({
+            success: false,
+            available: true,
+            message: 'User does not exist'
+        })
+    }
+
+    const repoDoc = await Repository.findOne({
+        owner: userDoc._id,
+        name: repoName
+    })
+
+    if (!repoDoc) {
+        console.log(`DEBUG/repo.controller.js checkAvailability - repo ${repoName} does not exist for user ${username}, repo name is available`)
+        return res.status(200).json({
+            success: true,
+            available: true
+        })
+    }
+
+    console.log(`DEBUG/repo.controller.js checkAvailability - repo ${repoName} already exists for user ${username}, repo name is not available`)
+    return res.status(200).json({
+        success: true,
+        available: false
+    })
+}
+
 export const getCommitHistory = async (req, res) => {
     const { user, repo } = req.params
-
     const commits = await fetchCommits(user, repo)
+
+    console.log(`DEBUG/repository.controller.js getCommitHistory called with user: ${user}, repo: ${repo}`)
+    console.log(`DEBUG/repository.controller.js Commits fetched: ${commits.length}`)
+    console.log(`DEBUG/repository.controller.js entire commits data: ${JSON.stringify(commits)}`)
 
     res.json({
         success: true,
@@ -88,30 +128,38 @@ export const getFileContent = async (req, res) => {
     res.setHeader("Cache-Control", "public, max-age=300") 
     res.send(file.content)
 }
-
 export const fetchRepositoriesByCurrentUser = async (req, res) => {
-    const { id } = req.user
-    const user = await User.findById(id).populate('repositories')
-    console.log(`DEBUG/repo.contoller.js user \n ${user}`)
 
-    if(!user) {
+    const { id } = req.user
+
+    const user = await User.findById(id).populate({
+        path: "repositories",
+        populate: {
+            path: "issues"
+        }
+    })
+    console.log('DEBUG/repository.controller.js fetchRepositoriesByCurrentUser - user found:', user)
+    if (!user) {
         return res.status(404).json({
             success: false,
             message: 'Cannot find user'
         })
     }
-    const allRepos = user.repositories
-    console.log(`DEBUG/repo.contoller.js  allRepos :\n ${allRepos}`)
-    if(!allRepos) {
-        return res.status(500).json({
-            success: false,
-            message: 'Internal server error'
-        })
-    }
 
+    const allRepos = user.repositories.map(repo => ({
+        _id: repo._id,
+        name: repo.name,
+        description: repo.description,
+        visibility: repo.visibility,
+        issuesCount: repo.issues.length,
+        owner: repo.owner,
+        username: user.username
+    })) 
+    console.log('Repos', allRepos)
+    console.log(`DEBUG/repository.controller.js fetchRepositoriesByCurrentUser called for user id: ${id}, repos found: ${allRepos}`)
     return res.status(200).json({
         success: true,
-        message: 'Fetched all repositories successfuly',
+        message: 'Fetched all repositories successfully',
         data: allRepos
     })
 }
@@ -141,7 +189,8 @@ export const createRepository = async (req, res) => {
             { session }
         )
 
-        await User.findByIdAndUpdate(
+
+        const user = await User.findByIdAndUpdate(
             ownerId,
             { $push: { repositories: repo[0]._id } },
             { session }
@@ -153,7 +202,17 @@ export const createRepository = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: 'Repository created',
-            data: repo[0]
+            data: {
+                name: repo[0].name,
+                description: repo[0].description,
+                visibility: repo[0].visibility,
+                owner: {
+                    _id: user._id,
+                    username: user.username
+                },
+                _id: repo[0]._id,
+                issues: repo[0].issues
+            }
         })
 
     } catch (err) {

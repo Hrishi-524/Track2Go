@@ -15,6 +15,7 @@ const isLoggedIn = async (req, res, next) => {
     }
 
     if (!token) {
+        console.log("DEBUG/isLoggedIn.js No token provided in request");
         return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
 

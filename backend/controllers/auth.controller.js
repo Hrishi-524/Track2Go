@@ -12,6 +12,7 @@ export const signUpUser = async (req, res) => {
     }
 
     const { username, email, password } = parsed.data;
+    console.log(`Attempting signup with email: ${email}, username: ${username}`)
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         return res.status(409).json({ success: false, message: 'Email already registered' });
@@ -116,7 +117,7 @@ export const logoutUser = async (req, res) => {
             await redisClient.set(token, "blacklisted", { ex: ttl });
         }
 
-        // 🔑 Clear cookie
+        // Clear cookie
         res.clearCookie("token");
 
         return res.status(200).json({

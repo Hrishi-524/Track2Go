@@ -5,6 +5,7 @@ import Repository from '../models/repository.model.js'
 export const createIssue = async (req, res) => {
     const { user, repo } = req.params
     const { title, description } = req.body
+    console.log(`DEBUG/issue.controller.js createIssue called with user: ${user}, repo: ${repo}, title: ${title}`)
 
     if (!title) {
         return res.status(400).json({ message: "Title required" })
@@ -26,12 +27,20 @@ export const createIssue = async (req, res) => {
         repository: repoDoc._id
     })
 
-    res.status(201).json({ success: true, data: issue })
+    await Repository.findByIdAndUpdate(
+        repoDoc._id,
+        { $push: { issues: issue._id } }
+    )
+
+    console.log(`DEBUG/issue.controller.js Issue created with id: ${issue._id}`)
+
+    return res.status(201).json({ success: true, data: issue })
 }
 
 
 export const fetchIssuesForRepository = async (req, res) => {
     const { user, repo } = req.params
+    console.log(`DEBUG/issue.controller.js fetchIssuesForRepository called with user: ${user}, repo: ${repo}`)
     const userDoc = await User.findOne({ username: user })
     if (!userDoc) return res.status(404).json({ message: "User not found" })
 
@@ -40,8 +49,9 @@ export const fetchIssuesForRepository = async (req, res) => {
         name: repo
     })
     if (!repoDoc) return res.status(404).json({ message: "Repository not found" })
-    
+    console.log(`DEBUG/issue.controller.js Fetching issues for repository: ${repoDoc._id}`)
     const issues = await Issue.find({ repository: repoDoc._id })
+    console.log(`DEBUG/issue.controller.js Issues found: ${issues.length}`)
     return res.status(200).json({
         success: true,
         data: issues
