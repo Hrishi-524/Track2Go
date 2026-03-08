@@ -33,7 +33,7 @@ export function ArchitectureSection() {
           <div className="border rounded-xl overflow-hidden bg-card hover:border-primary/40 transition">
 
             <Image
-              src="/t2g_hld.svg"
+              src="/track2go_system_design.svg"
               alt="Track2Go System Architecture"
               width={1200}
               height={600}

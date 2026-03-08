@@ -78,7 +78,7 @@ The CLI stores commit data and uploads repository snapshots to remote storage.
 
 # System Architecture
 
-![System Architecture](public/track2go_system_design.png)
+![System Architecture](frontend/public/track2go_system_design.svg)
 
 Track2Go consists of four main components:
 
