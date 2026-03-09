@@ -34,6 +34,7 @@ export function AppHeader() {
           href="/"
           className="font-semibold text-lg"
         >
+            <img src="/logo.svg" alt="Track2Go Logo" className="w-8 h-8 inline-block" />
           Track2Go
         </Link>
 
