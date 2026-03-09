@@ -4,7 +4,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { PencilLine } from 'lucide-react';
 
-export default async function UserLayout({ children, params } : { children : React.ReactNode, params: { user: string } }) {
+export default async function UserLayout({ children, params } : { children : React.ReactNode, params: Promise<{ user: string }> }) {
 
   const userdata = await getMe()
 
