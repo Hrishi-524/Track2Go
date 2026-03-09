@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/layout/app-header"
 import { AppFooter } from "@/components/layout/app-footer"
 import { ProgressBarProvider } from "@/components/providers/progress-bar-provider"
 import "nprogress/nprogress.css"
+import { Suspense } from "react"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,23 +24,25 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode
 }) {
-  return (
-    <html suppressHydrationWarning lang="en" className={inter.variable}>
-      <body className={`${geistMono.variable} antialiased min-h-screen flex flex-col`}>
-        <ThemeProvider>
-            <AppHeader />
-               <ProgressBarProvider>
-                <main className="flex-1">
-                    {children}
-                </main>
-               </ProgressBarProvider>
-            <AppFooter />
-        </ThemeProvider>
-        </body>
-    </html>
-  )
+    return (
+        <html suppressHydrationWarning lang="en" className={inter.variable}>
+            <body className={`${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+                <ThemeProvider>
+                    <AppHeader />
+                        <Suspense>
+                            <ProgressBarProvider>
+                                <main className="flex-1">
+                                    {children}
+                                </main>
+                            </ProgressBarProvider>
+                        </Suspense>
+                    <AppFooter />
+                </ThemeProvider>
+            </body>
+        </html>
+    )
 }
