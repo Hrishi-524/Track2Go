@@ -49,7 +49,7 @@ export function AppHeader() {
           </Link>
 
           <Link
-            href="https://github.com/YOUR_REPO"
+            href="https://github.com/Hrishi-524/Track2Go"
             target="_blank"
             className="text-sm text-muted-foreground hover:text-foreground"
           >

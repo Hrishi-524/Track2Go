@@ -63,7 +63,7 @@ export function DemoSection() {
 
               <div className="space-y-2 text-sm">
                 <p className="text-muted-foreground">Password</p>
-                <p className="font-mono text-sm">demo</p>
+                <p className="font-mono text-sm">demojohn</p>
               </div>
 
               <Button className="w-full" onClick={handleDemoLogin} disabled={loading}>
