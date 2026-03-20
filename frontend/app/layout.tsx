@@ -9,18 +9,18 @@ import "nprogress/nprogress.css"
 import { Suspense } from "react"
 
 const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+    subsets: ["latin"],
+    variable: "--font-sans",
 })
 
 const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+    subsets: ["latin"],
+    variable: "--font-mono",
 })
 
 export const metadata: Metadata = {
-  title: "Track2Go",
-  description: "Git-inspired repository tracking system",
+    title: "Track2Go",
+    description: "Git-inspired repository tracking system",
 }
 
 export default function RootLayout({
@@ -33,13 +33,9 @@ export default function RootLayout({
             <body className={`${geistMono.variable} antialiased min-h-screen flex flex-col`}>
                 <ThemeProvider>
                     <AppHeader />
-                        <Suspense>
-                            <ProgressBarProvider>
-                                <main className="flex-1">
-                                    {children}
-                                </main>
-                            </ProgressBarProvider>
-                        </Suspense>
+                        <main className="flex-1">
+                            {children}
+                        </main> 
                     <AppFooter />
                 </ThemeProvider>
             </body>
