@@ -56,6 +56,7 @@ export const loginUser = async (req, res) => {
     }
 
     const { email, password } = parsed.data;
+    console.log(`Attempting login with email: ${email} and password: ${password}`)
 
     const user = await User.findOne({ email })
     if(!user) {
@@ -84,7 +85,8 @@ export const loginUser = async (req, res) => {
         return res.status(200).json({success: true, message: "User logged in", data: { user: { id: user._id, username: user.username, email: user.email }}});
     } else {
         console.log('Password is incorrect');
-        return res.status(200).json({ success: false, message: 'Invalid email or password' });
+        console.log(`Login failed for email: ${email}`);
+        return res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
 }
 

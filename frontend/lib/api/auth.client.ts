@@ -14,15 +14,18 @@ export async function signup(username: string, email: string, password: string) 
 }
 
 export async function login(email: string, password: string) {
+    console.log("Logging in user", { email, password })
     const res = await api.post("/auth/login", {
         email,
         password
     });
+    console.log("Login response", res.data)
     return res.data;
 }
 
 export async function logout() {
   const res = await api.post("/auth/logout");
+  console.log("Logout response", res.data)
   return res.data;
 }
 
