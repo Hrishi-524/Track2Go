@@ -13,13 +13,25 @@ The project includes:
 
 ---
 
-# Web Dashboard & Repository Management
-[![Dashboard Demo](docs/dashboard-demo.png)](https://youtu.be/cxo2JVYgxdQ)
+<h2>🖥️ Web Dashboard & Repository Management</h2>
 
-# Complete CLI Workflow (Init → Commit → Push)
-[![CLI Demo](docs/cli-demo.png)](https://youtu.be/BnLiCTy-_c8)
+<a href="https://youtu.be/cxo2JVYgxdQ" target="_blank">
+  <img src="docs/dashboard-demo.png" alt="Dashboard Demo" width="900">
+</a>
+
+<h2>💻 Complete CLI Workflow (Init → Commit → Push)</h2>
+
+<a href="https://youtu.be/BnLiCTy-_c8" target="_blank">
+  <img src="docs/cli-demo.png" alt="CLI Demo" width="900">
+</a>
 
 ---
+
+# System Architecture
+
+![System Architecture](frontend/public/track2go_system_design.svg)
+
+Track2Go consists of four main components:
 
 # Features
 
@@ -66,14 +78,6 @@ track2go push
 ```
 
 The CLI stores commit data and uploads repository snapshots to remote storage.
-
----
-
-# System Architecture
-
-![System Architecture](frontend/public/track2go_system_design.svg)
-
-Track2Go consists of four main components:
 
 ## CLI
 
