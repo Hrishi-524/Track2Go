@@ -66,7 +66,7 @@ async function copyUrl() {
 
         <CardContent className="space-y-2 text-sm">
 
-          <p>$ track2go clone https://track2go.dev/{user}/{repo}</p>
+          <p>$ track2go clone https://track2go.hrishi-developer.in/{user}/{repo}</p>
           <p>$ cd {repo}</p>
           <p>$ track2go init</p>
           <p>$ track2go add .</p>

@@ -7,7 +7,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 dotenv.config({
-  path: path.join(__dirname, '../.env')
+  path: path.join(__dirname, '../.env'),
+  quiet: true
 })
 
 AWS.config.update({
@@ -19,5 +20,4 @@ export const S3_BUCKET = process.env.S3_BUCKET
 if (!S3_BUCKET) {
   throw new Error('S3_BUCKET is missing. Check .env configuration.')
 }
-console.log('Loaded S3_BUCKET:', process.env.S3_BUCKET)
 export const s3 = new AWS.S3()

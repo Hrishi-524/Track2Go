@@ -22,7 +22,7 @@ export default async function walkDir(dir, baseDir, collected = []) {
 }
 
 const ignoreEntries = [
-    '.apnaGit',
+    '.track2go',
     '.git',
     'node_moduless'
 ]

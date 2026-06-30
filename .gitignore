@@ -6,7 +6,7 @@ nowarnings
 node_modules/
 cli/node_modules/
 .env
-.apnaGit/
+.track2go/
 react-front/
 projects/
 .agents/

@@ -9,7 +9,7 @@ async function walkDir(dir, baseDir, collected = []) {
     const entries = await fs.readdir(dir, { withFileTypes: true })
 
     for (const entry of entries) {
-        if (entry.name === '.apnaGit' || entry.name === 'node_modules') {
+        if (entry.name === '.track2go' || entry.name === 'node_modules') {
             continue
         }
 
@@ -28,7 +28,7 @@ async function walkDir(dir, baseDir, collected = []) {
 
 export async function add(targets = []) {
     const repoRoot = process.cwd()
-    const stagingPath = path.join(repoRoot, '.apnaGit', 'staging')
+    const stagingPath = path.join(repoRoot, '.track2go', 'staging')
 
     if (targets.length === 0) {
         throw new Error('Nothing specified, nothing added.')
@@ -60,7 +60,7 @@ export async function add(targets = []) {
 }
 
 export const initRepo = async () => {
-    const repoPath = path.resolve(process.cwd(), '.apnaGit')
+    const repoPath = path.resolve(process.cwd(), '.track2go')
     const commitsPath = path.join(repoPath, 'commits')
     try {
         await fs.mkdir(repoPath, { recursive: true })
@@ -76,7 +76,7 @@ export const initRepo = async () => {
 }
 
 export const addFile = async (filePath) => {
-    const stagingPath = path.resolve(path.join(process.cwd(), '.apnaGit'), 'staging')
+    const stagingPath = path.resolve(path.join(process.cwd(), '.track2go'), 'staging')
     const fileName = path.basename(filePath)
     try {
         await fs.mkdir(stagingPath, { recursive: true })
@@ -89,7 +89,7 @@ export const addFile = async (filePath) => {
 
 export async function commitFiles(options) {
     const repoRoot = process.cwd()
-    const trackingPath = path.join(repoRoot, '.apnaGit')
+    const trackingPath = path.join(repoRoot, '.track2go')
     const stagingPath = path.join(trackingPath, 'staging')
     const commitsPath = path.join(trackingPath, 'commits')
 
@@ -177,8 +177,8 @@ export async function commitFiles(options) {
 
 export async function push() {
     const repoRoot = process.cwd()
-    const commitsPath = path.join(repoRoot, '.apnaGit', 'commits')
-    const remotePath = path.join(repoRoot, '.apnaGit', 'REMOTE')
+    const commitsPath = path.join(repoRoot, '.track2go', 'commits')
+    const remotePath = path.join(repoRoot, '.track2go', 'REMOTE')
     try {
         await fs.access(remotePath)
         const remote = (await fs.readFile(remotePath, 'utf8')).trim()
@@ -210,7 +210,7 @@ export async function push() {
         }
         }
 
-        const localHeadPath = path.join(repoRoot, '.apnaGit', 'HEAD')
+        const localHeadPath = path.join(repoRoot, '.track2go', 'HEAD')
         const localHead = (await fs.readFile(localHeadPath, 'utf8')).trim()
 
         await s3.upload({
@@ -232,10 +232,10 @@ function stripRemotePrefix(key, userName, repoName) {
 
 export const pull = async () => {
   const repoRoot = process.cwd()
-  const gitDir = path.join(repoRoot, '.apnaGit')
+  const gitDir = path.join(repoRoot, '.track2go')
   const commitsPath = path.join(gitDir, 'commits')
   const headPath = path.join(gitDir, 'HEAD')
-    const remotePath = path.join(repoRoot, '.apnaGit', 'REMOTE')
+    const remotePath = path.join(repoRoot, '.track2go', 'REMOTE')
   try {
         await fs.access(remotePath)
         const remote = (await fs.readFile(remotePath, 'utf8')).trim()
@@ -285,9 +285,9 @@ export const pull = async () => {
 
 export async function status () {
     const repoRoot = process.cwd()
-    const trackingPath = path.join(repoRoot, '.apnaGit')
-    const stagingPath = path.join(repoRoot, '.apnaGit', 'staging')
-    const commitsPath = path.join(repoRoot, '.apnaGit', 'commits')
+    const trackingPath = path.join(repoRoot, '.track2go')
+    const stagingPath = path.join(repoRoot, '.track2go', 'staging')
+    const commitsPath = path.join(repoRoot, '.track2go', 'commits')
 
     // Head Snapshot || Snapshot of latest commit
     const headPath = path.join(trackingPath, 'HEAD')
@@ -413,7 +413,7 @@ export async function status () {
 
 export async function revert(commitId) {
     const repoRoot = process.cwd()
-    const gitDir = path.join(repoRoot, '.apnaGit')
+    const gitDir = path.join(repoRoot, '.track2go')
     const commitsPath = path.join(gitDir, 'commits')
     const stagingPath = path.join(gitDir, 'staging')
     const headPath = path.join(gitDir, 'HEAD')
@@ -439,7 +439,7 @@ export async function revert(commitId) {
     const workingFiles = await walkDir(repoRoot, repoRoot)
 
     for (const file of workingFiles) {
-        if (file.relativePath.startsWith('.apnaGit')) continue
+        if (file.relativePath.startsWith('.track2go')) continue
         await fs.rm(file.fullPath, { force: true })
     }
 
@@ -464,7 +464,7 @@ export async function revert(commitId) {
 
 export async function remoteAddOrigin(originUrl) {
     const repoRoot = process.cwd()
-    const trackingPath = path.join(repoRoot, '.apnaGit')
+    const trackingPath = path.join(repoRoot, '.track2go')
     const remotePath = path.join(trackingPath, 'REMOTE')
 
     try {
