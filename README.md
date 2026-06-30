@@ -13,18 +13,11 @@ The project includes:
 
 ---
 
-# Demo
+# Web Dashboard & Repository Management
+[![Dashboard Demo](docs/dashboard-demo.png)](https://youtu.be/cxo2JVYgxdQ)
 
-You can explore the platform using a demo account.
-
-**Launch Demo** directly from the landing page.
-
-Demo credentials:
-
-```
-Email: demo@track2go.dev
-Password: demojohn
-```
+# Complete CLI Workflow (Init → Commit → Push)
+[![CLI Demo](docs/cli-demo.png)](https://youtu.be/BnLiCTy-_c8)
 
 ---
 

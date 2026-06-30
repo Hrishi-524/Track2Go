@@ -309,8 +309,6 @@ export async function status () {
     const commitJson = await fs.readFile(path.join(commitsPath, head, 'commit.json'))
 
     const headSnapshot = JSON.parse(commitJson).files
-    console.log('Head Snapshot')
-    console.log(headSnapshot)
 
     // Working Snapshot
     const workingDirectoryFiles = await walkDir(repoRoot, repoRoot)
@@ -320,8 +318,6 @@ export async function status () {
         const hashedContent = await hashFile(workingDirectoryFile.fullPath)
         workingSnapshot[`${workingDirectoryFile.relativePath}`] = hashedContent
     }
-    console.log('Working Snapshot')
-    console.log(workingSnapshot)
 
     // Staging Snapshot
     const stagingDirectoryFiles = await walkDir(stagingPath, stagingPath)
@@ -331,8 +327,8 @@ export async function status () {
         const hashedContent = await hashFile(stagingDirectoryFile.fullPath)
         stagingSnapshot[`${stagingDirectoryFile.relativePath}`] = hashedContent
     }
-    console.log('Staging Snapshot')
-    console.log(stagingSnapshot)
+    // console.log('Staging Snapshot')
+    // console.log(stagingSnapshot)
     
     // To Normalize Snapshot Object Map : Required for Comparison Consistency
     const normalize = (obj) =>  Object.keys(obj).sort().reduce((acc, key) => {
