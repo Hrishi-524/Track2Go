@@ -1,18 +1,31 @@
-import { headers } from "next/headers"
-import { getMe } from "@/lib/api/auth.server"
+"use client"
+
 import Link from "next/link"
-import { redirect } from "next/navigation"
-import { PencilLine } from 'lucide-react';
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { PencilLine } from "lucide-react"
+import { useAuth } from "@/hooks/auth/useAuth"
 
-export default async function UserLayout({ children, params } : { children : React.ReactNode, params: Promise<{ user: string }> }) {
+export default function UserLayout({ children }: { children: React.ReactNode }) {
 
-  const userdata = await getMe()
+  const { user, isLoading } = useAuth()
+  const router = useRouter()
 
-  if (!userdata?.user) {
-    redirect("/login")
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace("/login")
+    }
+  }, [isLoading, router, user])
+
+  if (isLoading) {
+    return (
+      <div className="container py-24 text-center text-muted-foreground">
+        Checking authentication...
+      </div>
+    )
   }
 
-  const user = userdata.user
+  if (!user) return null
 
   return (
     <div className="max-w-[1124px] mx-auto px-6 py-8">
@@ -26,6 +39,7 @@ export default async function UserLayout({ children, params } : { children : Rea
 
             <img
               src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`}
+              alt={user.username}
               className="w-full aspect-square rounded-full"
             />
 

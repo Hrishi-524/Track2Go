@@ -1,13 +1,28 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { RepoList } from "@/components/dashboard/repo-list"
 import { getMyRepos } from "@/lib/api/repo.api"
-import { headers } from "next/headers"
+import { Repo } from "@/lib/types"
 
-export default async function Page() {
+export default function Page() {
 
-  const h = await headers()
-  const cookie = h.get("cookie") || ""
+  const [repos, setRepos] = useState<Repo[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const repos = await getMyRepos(cookie)
+  useEffect(() => {
+    async function loadRepos() {
+      try {
+        const data = await getMyRepos()
+        setRepos(data)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadRepos()
+  }, [])
+
   return (
     <div className="space-y-4">
 
@@ -15,8 +30,11 @@ export default async function Page() {
         Repositories
       </h2>
 
+      {loading && (
+        <p className="text-sm text-muted-foreground">Loading repositories...</p>
+      )}
 
-      <RepoList repos={repos} />
+      {!loading && <RepoList repos={repos} />}
 
     </div>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { updateUserDetails } from "@/lib/api/user.client"
 import { useAuth } from "@/hooks/auth/useAuth"
 
@@ -12,6 +12,15 @@ export default function SettingsPage() {
   const [email, setEmail] = useState(user?.email || "")
   const [bio, setBio] = useState(user?.bio || "")
   const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || "")
+
+  useEffect(() => {
+    if (!user) return
+
+    setUsername(user.username || "")
+    setEmail(user.email || "")
+    setBio(user.bio || "")
+    setAvatarUrl(user.avatarUrl || "")
+  }, [user])
 
   async function handleSave() {
     if (!user) return

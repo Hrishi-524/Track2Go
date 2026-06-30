@@ -9,3 +9,4 @@ cli/node_modules/
 .apnaGit/
 react-front/
 projects/
+.agents/
